@@ -18,6 +18,11 @@ public:
 	void render(Renderer* renderer) {
 		renderer->drawSprite(ResourceManager::getTexture(texture), position, scale, rotate);
 	}
+
+	void setRotate(glm::vec3 rotate) {
+		this->rotate = rotate;
+	}
+
 private:
 	std::string texture;
 	glm::vec3 position;
