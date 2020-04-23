@@ -11,12 +11,18 @@ public:
     Renderer(Shader& shader) {
         this->shader = shader;
         GLuint VBO;
-        float vertices[] = {
+        /*float vertices[] = {
             // positions          // texture coords
              0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
              0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
             -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
             -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+        };*/
+        float vertices[] = {
+             0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+             0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
         };
         unsigned int indices[] = {
             0, 1, 3, // first triangle
@@ -35,11 +41,11 @@ public:
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         glBindVertexArray(this->quadVAO);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
         glEnableVertexAttribArray(0);
         
         
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
