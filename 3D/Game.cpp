@@ -17,8 +17,8 @@ Game::Game(int width, int height) {
 	this->height = height;
 	init();
 
-	plane = new Plane("background", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-55.0f, 0.0f, 0.0f));
-	plane2 = new Plane("background", glm::vec3(0.0f, 1.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.0f, 0.0f, 10.0f));
+	plane = new Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(-55.0f, 0.0f, 0.0f));
+	plane2 = new Plane("background", "background", glm::vec3(0.0f, 1.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
 
@@ -69,22 +69,23 @@ void Game::init() {
 	ResourceManager::getShader("lighted").use().setInt("image", 0);
 	ResourceManager::getShader("lighted").setMat4("projection", projection);
 
-	ResourceManager::getShader("lighted").setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-	ResourceManager::getShader("lighted").setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-	ResourceManager::getShader("lighted").setVec3("material.specular", 0.5f, 0.5f, 0.31f);
+	ResourceManager::getShader("lighted").setInt("material.diffuse", 0);
+	ResourceManager::getShader("lighted").setInt("material.specular", 1);
 	ResourceManager::getShader("lighted").setFloat("material.shine", 64.0f);
 	
 	ResourceManager::getShader("lighted").setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 	ResourceManager::getShader("lighted").setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
 	ResourceManager::getShader("lighted").setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-	ResourceManager::getShader("lighted").setVec3("objectColor", 0.2f, 0.8f, 0.8f);
+	ResourceManager::getShader("lighted").setVec3("objectColor", 0.8f, 0.8f, 0.8f);
 	ResourceManager::getShader("lighted").setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 	ResourceManager::getShader("lighted").setVec3("lightPos", 0.0f, 1.0f, -3.0f);
 
 	ResourceManager::loadTexture("res/textures/person.png", GL_TRUE, "person");
 	ResourceManager::loadTexture("res/textures/tree.png", GL_TRUE, "tree");
 	ResourceManager::loadTexture("res/textures/background.png", GL_FALSE, "background");
+	ResourceManager::loadTexture("res/textures/crate.png", GL_TRUE, "crate");
+	ResourceManager::loadTexture("res/textures/crateSpecular.png", GL_TRUE, "crateSpecular");
 	ResourceManager::loadTexture("res/textures/grass.png", GL_TRUE, "grass");
 
 	Shader shader = ResourceManager::getShader("lighted");

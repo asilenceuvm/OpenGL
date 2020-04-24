@@ -4,8 +4,9 @@
 
 class Plane {
 public:
-	Plane(std::string texture, glm::vec3 position, glm::vec3 scale, glm::vec3 rotate) {
+	Plane(std::string texture, std::string spec, glm::vec3 position, glm::vec3 scale, glm::vec3 rotate) {
 		this->texture = texture;
+		this->spec = spec;
 		this->position = position;
 		this->scale = scale;
 		this->rotate = rotate;
@@ -16,7 +17,7 @@ public:
 	}
 	
 	void render(Renderer* renderer) {
-		renderer->drawSprite(ResourceManager::getTexture(texture), position, scale, rotate);
+		renderer->drawSprite(ResourceManager::getTexture(texture), ResourceManager::getTexture(spec), position, scale, rotate);
 	}
 
 	void setRotate(glm::vec3 rotate) {
@@ -24,7 +25,7 @@ public:
 	}
 
 private:
-	std::string texture;
+	std::string texture, spec;
 	glm::vec3 position;
 	glm::vec3 scale;
 	glm::vec3 rotate;
