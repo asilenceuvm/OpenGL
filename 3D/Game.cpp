@@ -18,7 +18,7 @@ Game::Game(int width, int height) {
 	init();
 
 	plane = new Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(-55.0f, 0.0f, 0.0f));
-	plane2 = new Plane("background", "background", glm::vec3(0.0f, 1.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.0f, 0.0f, 10.0f));
+	plane2 = new Plane("light", "light", glm::vec3(0.0f, 1.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
 
@@ -73,9 +73,18 @@ void Game::init() {
 	ResourceManager::getShader("lighted").setInt("material.specular", 1);
 	ResourceManager::getShader("lighted").setFloat("material.shine", 64.0f);
 	
-	ResourceManager::getShader("lighted").setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-	ResourceManager::getShader("lighted").setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-	ResourceManager::getShader("lighted").setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	ResourceManager::getShader("lighted").setVec3("dirLight.direction", 0.0f, 0.0f, 1.0f);
+	ResourceManager::getShader("lighted").setVec3("dirLight.ambient", 0.2f, 0.2f, 0.2f);
+	ResourceManager::getShader("lighted").setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
+	ResourceManager::getShader("lighted").setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f);
+
+	ResourceManager::getShader("lighted").setVec3("pointLight.position", 0.0f, 0.0f, 1.0f);
+	ResourceManager::getShader("lighted").setFloat("pointLight.constant", 1.0f);
+	ResourceManager::getShader("lighted").setFloat("pointLight.linear", 0.09f);
+	ResourceManager::getShader("lighted").setFloat("pointLight.quadratic", 0.032f);
+	ResourceManager::getShader("lighted").setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+	ResourceManager::getShader("lighted").setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+	ResourceManager::getShader("lighted").setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 
 	ResourceManager::getShader("lighted").setVec3("objectColor", 0.8f, 0.8f, 0.8f);
 	ResourceManager::getShader("lighted").setVec3("lightColor", 1.0f, 1.0f, 1.0f);
