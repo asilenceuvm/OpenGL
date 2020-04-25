@@ -11,13 +11,15 @@ glm::mat4 view(1);
 Camera camera;
 Plane* plane;
 Plane* plane2;
+Plane* plane3;
 
 Game::Game(int width, int height) {
 	this->width = width;
 	this->height = height;
 	init();
 
-	plane = new Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(-55.0f, 0.0f, 0.0f));
+	plane = new Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.0f, -2.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(90.0f, 0.0f, 0.0f));
+	plane3 = new Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.25f, -2.75f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f));
 	plane2 = new Plane("light", "light", glm::vec3(0.0f, 1.0f, -3.0f), glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
@@ -25,6 +27,7 @@ Game::Game(int width, int height) {
 Game::~Game() {
 	delete plane;
 	delete plane2;
+	delete plane3;
 	delete renderer;
 }
 
@@ -32,6 +35,7 @@ Game::~Game() {
 void Game::render() {
 	plane->render(renderer);
 	plane2->render(renderer);
+	plane3->render(renderer);
 }
 
 void Game::update() {
@@ -56,9 +60,9 @@ void Game::update() {
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	ResourceManager::getShader("lighted").setMat4("view", view);
 	ResourceManager::getShader("lighted").setVec3("viewPos", cameraPos);
-	plane->setRotate(glm::vec3(glfwGetTime() * 20, 0, 0));
+//	plane->setRotate(glm::vec3(glfwGetTime() * 20, 0, 0));
 
-//	ResourceManager::getShader("lighted").setVec3("lightPos", glm::vec3(0.0f, 5.0f, cos(glfwGetTime()) - 3.0));
+//	ResourceManager::getShader("lighted").setVec3("dirLight.direction", 0.0f, 3 * cos(glfwGetTime()), 3 * sin(glfwGetTime()));
 }
 
 
@@ -73,12 +77,12 @@ void Game::init() {
 	ResourceManager::getShader("lighted").setInt("material.specular", 1);
 	ResourceManager::getShader("lighted").setFloat("material.shine", 64.0f);
 	
-	ResourceManager::getShader("lighted").setVec3("dirLight.direction", 0.0f, 0.0f, 1.0f);
+	ResourceManager::getShader("lighted").setVec3("dirLight.direction", 0.0f, 0.0f, -1.0f);
 	ResourceManager::getShader("lighted").setVec3("dirLight.ambient", 0.2f, 0.2f, 0.2f);
 	ResourceManager::getShader("lighted").setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
 	ResourceManager::getShader("lighted").setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f);
 
-	ResourceManager::getShader("lighted").setVec3("pointLight.position", 0.0f, 0.0f, 1.0f);
+	ResourceManager::getShader("lighted").setVec3("pointLight.position", 0.0f, 0.0f, -3.0f);
 	ResourceManager::getShader("lighted").setFloat("pointLight.constant", 1.0f);
 	ResourceManager::getShader("lighted").setFloat("pointLight.linear", 0.09f);
 	ResourceManager::getShader("lighted").setFloat("pointLight.quadratic", 0.032f);
