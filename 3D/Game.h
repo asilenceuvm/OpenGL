@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer.h"
+#include "Renderers.h"
 
 class Game {
 public:
@@ -9,7 +9,6 @@ public:
 	void render();
 	void update();
 private:
-	Renderer* renderer;
 	int width, height;
 	void init();
 };

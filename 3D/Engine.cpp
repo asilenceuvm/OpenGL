@@ -16,6 +16,11 @@
 GLFWwindow* window;
 Game* game;
 
+void GLAPIENTRY MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam ) {
+	std::cout << (stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message) << std::endl;
+}
 
 Engine::Engine() {
 	width = 800;
@@ -28,19 +33,28 @@ Engine::Engine() {
 	//global gl settings
 	//depth buffer
 	glEnable(GL_DEPTH_TEST);
+	
 	//alpha channel
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	//face culling
-	glEnable(GL_CULL_FACE);
+	/*glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CW);*/
+	
 	//Anti Aliasing
 	glfwWindowHint(GLFW_SAMPLES, 4); //4x MSAA
 	glEnable(GL_MULTISAMPLE);
+	
 	//vsync
 	//glfwSwapInterval(1); //vsync
 	glfwSwapInterval(0); //not vsync
+
+	//debug messages
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(MessageCallback, 0);
+
 	//print graphics context
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 

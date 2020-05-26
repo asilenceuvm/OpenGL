@@ -1,5 +1,5 @@
 #pragma once
-#include "Renderer.h"
+#include "Renderers.h"
 #include "ResourceManager.h"
 
 class Plane {
@@ -16,8 +16,8 @@ public:
 
 	}
 	
-	void render(Renderer* renderer) {
-		renderer->drawSprite(ResourceManager::getTexture(texture), ResourceManager::getTexture(spec), position, scale, rotate);
+	void render(ObjectRenderer* renderer) {
+		renderer->drawObject(ResourceManager::getTexture(texture), ResourceManager::getTexture(spec), position, scale, rotate);
 	}
 
 	void setRotate(glm::vec3 rotate) {
