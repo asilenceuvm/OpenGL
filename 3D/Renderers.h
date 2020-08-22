@@ -6,7 +6,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class ObjectRenderer {
+class Renderer {
+public:
+    Shader getShader();
+protected:
+    GLuint VAO, VBO, EBO;
+    Shader shader;
+};
+
+class ObjectRenderer : public Renderer {
 public:
     ObjectRenderer(Shader& shader);
     ~ObjectRenderer();
@@ -17,13 +25,10 @@ public:
         glm::vec3 size = glm::vec3(10, 10, 10), 
         glm::vec3 rotate = glm::vec3(0.0f, 0.0f, 0.0f), 
         glm::vec3 color = glm::vec3(1.0f));
-private:
-    GLuint VAO, VBO, EBO;
-    Shader shader;
 };
 
 
-class WaterRenderer {
+class WaterRenderer : public Renderer {
 public:
     WaterRenderer(Shader& shader);
     ~WaterRenderer();
@@ -32,6 +37,5 @@ public:
         glm::vec3 size, 
         glm::vec3 color = glm::vec3(1.0f));
 private:
-    GLuint VAO, VBO, EBO;
-    Shader shader;
+    GLuint FBO;
 };

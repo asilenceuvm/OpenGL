@@ -1,5 +1,7 @@
 #include "ResourceManager.h"
 
+#include "Logger.h"
+
 std::map<std::string, Texture> ResourceManager::textures;
 std::map<std::string, Shader> ResourceManager::shaders;
 
@@ -32,6 +34,10 @@ void ResourceManager::clear() {
 }
 
 Shader ResourceManager::loadShaderFromFile(const GLchar* vShaderFile, const GLchar* fShaderFile, const GLchar* gShaderFile) {
+    std::string name = vShaderFile;
+    name = name.substr(name.find_last_of("/") + 1, name.find("."));
+    std::string message = "Generating " + name + " shader";
+    Logger::logMessage("RES", message.c_str());
     std::string vertexCode;
     std::string fragmentCode;
     std::string geometryCode;
@@ -57,9 +63,10 @@ Shader ResourceManager::loadShaderFromFile(const GLchar* vShaderFile, const GLch
             geometryShaderFile.close();
             geometryCode = gShaderStream.str();
         }
+        Logger::logSuccess("RES", message.c_str());
     }
     catch (std::exception e) {
-        std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
+        Logger::logError("RES", message.c_str());
     }
     const GLchar* vShaderCode = vertexCode.c_str();
     const GLchar* fShaderCode = fragmentCode.c_str();

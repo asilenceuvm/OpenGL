@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\gfx">
+      <UniqueIdentifier>{674ecc2f-0304-4a99-8bcc-a647f3d498ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{b1aa5337-445d-41fa-aba6-e445aed240ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gfx">
+      <UniqueIdentifier>{34fca5a9-7b1f-4882-ac6b-e971fbce3723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\managers">
+      <UniqueIdentifier>{7f2186cb-a380-41dc-bf5d-f9d4fcfb3026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\managers">
+      <UniqueIdentifier>{c4b6b4f2-99d4-4be6-bdcf-5fe189c72ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics\objects">
+      <UniqueIdentifier>{38221f75-445a-4d93-bb36-327b63f5d962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,57 +39,66 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Renderers.cpp">
+      <Filter>Source Files\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Source Files\gfx</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\managers</Filter>
     </ClCompile>
-    <ClCompile Include="Renderers.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files\managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Display.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderers.h">
+      <Filter>Header Files\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\gfx</Filter>
+    </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\gfx</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Display.h">
+      <Filter>Header Files\gfx</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\managers</Filter>
     </ClInclude>
-    <ClInclude Include="Renderers.h">
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files\physics\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneCollider.h">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

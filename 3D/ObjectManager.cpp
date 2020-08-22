@@ -1,7 +1,9 @@
 #include "ObjectManager.h"
 
-void ObjectManager::update()
-{
+void ObjectManager::update() {
+	for (auto& plane : planes) {
+		plane.update();
+	}
 }
 
 void ObjectManager::render(ObjectRenderer* renderer) {

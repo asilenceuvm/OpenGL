@@ -1,10 +1,14 @@
 #pragma once
+
+#include <memory>
+
 #include "Renderers.h"
 #include "ResourceManager.h"
+#include "Rigidbody.h"
 
 class Plane {
 public:
-	Plane(std::string texture, std::string spec, glm::vec3 position, glm::vec3 scale, glm::vec3 rotate) {
+	Plane(std::string texture, std::string spec, glm::vec3 position, glm::vec3 scale, glm::vec3 rotate) : body(position, glm::vec3(0)) {
 		this->texture = texture;
 		this->spec = spec;
 		this->position = position;
@@ -13,7 +17,8 @@ public:
 	}
 
 	void update() {
-
+		body.update();
+		position = body.getPos();
 	}
 	
 	void render(ObjectRenderer* renderer) {
@@ -29,4 +34,6 @@ private:
 	glm::vec3 position;
 	glm::vec3 scale;
 	glm::vec3 rotate;
+
+	RigidBody body;
 };

@@ -1,5 +1,4 @@
 #include "Engine.h"
-#include "Engine.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -17,9 +16,13 @@ GLFWwindow* window;
 Game* game;
 
 void GLAPIENTRY MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam ) {
-	std::cout << (stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-		type, severity, message) << std::endl;
+	const GLchar* log = (stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+	if (type == GL_DEBUG_TYPE_ERROR) {
+		Logger::logError("OPENGL", log);
+	}
+	else {
+		Logger::logWarning("OPENGL", log, false);
+	}
 }
 
 Engine::Engine() {
@@ -39,9 +42,9 @@ Engine::Engine() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	//face culling
-	/*glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);*/
+	glFrontFace(GL_CW);
 	
 	//Anti Aliasing
 	glfwWindowHint(GLFW_SAMPLES, 4); //4x MSAA
@@ -56,12 +59,14 @@ Engine::Engine() {
 	glDebugMessageCallback(MessageCallback, 0);
 
 	//print graphics context
-	std::cout << glGetString(GL_RENDERER) << std::endl;
+	std::string log = "Graphics context: ";
+	log += (char*)(glGetString(GL_RENDERER));
+	Logger::logInfo("OPENGL", log.c_str());
 
-	glfwSetKeyCallback(window, InputManager::key_callback);
-
+	//set up input callbacks
 	InputManager::lastX = static_cast<float>(width / 2);
 	InputManager::lastY = static_cast<float>(height / 2);
+	glfwSetKeyCallback(window, InputManager::key_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, InputManager::mouse_callback);
 
@@ -83,7 +88,6 @@ void Engine::update() {
 
 void Engine::render() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//draw
@@ -120,7 +124,7 @@ void Engine::run(double delta) {
 		//reset and output fps
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
+			//std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
 			updates = 0, frames = 0;
 		}
 

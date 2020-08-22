@@ -1,5 +1,9 @@
 #include "Renderers.h"
 
+Shader Renderer::getShader() {
+	return this->shader;
+}
+
 ObjectRenderer::ObjectRenderer(Shader& shader) {
 	this->shader = shader;
 	float vertices[] = {
@@ -87,6 +91,8 @@ WaterRenderer::WaterRenderer(Shader& shader) {
 	glGenVertexArrays(1, &this->VAO);
 	glGenBuffers(1, &this->VBO);
 	glGenBuffers(1, &this->EBO);
+	glGenFramebuffers(1, &this->FBO);
+
 	glBindVertexArray(this->VAO);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
@@ -97,15 +103,28 @@ WaterRenderer::WaterRenderer(Shader& shader) {
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, this->FBO);
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	/*
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);*/
 }
 
 WaterRenderer::~WaterRenderer() {
 	glDeleteVertexArrays(1, &this->VAO);
 	glDeleteVertexArrays(1, &this->VBO);
 	glDeleteVertexArrays(1, &this->EBO);
+	glDeleteFramebuffers(1, &this->FBO);
 }
 
 

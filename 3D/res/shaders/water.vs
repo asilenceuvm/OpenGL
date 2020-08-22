@@ -2,6 +2,7 @@
 layout (location = 0) in vec3 vertex; 
 
 out vec4 vertexColor;
+out vec2 texCoords;
 
 uniform mat4 model;
 uniform mat4 view;

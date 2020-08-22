@@ -1,10 +1,11 @@
 #include "Game.h"
 
+#include <iostream>
+
+#include "Logger.h"
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
-
-#include <iostream>
 #include "Plane.h"
 #include "ObjectManager.h"
 
@@ -63,10 +64,12 @@ void Game::update() {
 	ResourceManager::getShader("water").use();
 	ResourceManager::getShader("water").setMat4("view", view);
 
+	objectManager.update();
 }
 
 
 void Game::init() {
+	Logger::logMessage("RES", "Generating Resources");
 	//lighted shader
 	ResourceManager::loadShader("res/shaders/lighted.vs", "res/shaders/lighted.fs", nullptr, "lighted");
 
@@ -116,4 +119,5 @@ void Game::init() {
 	ResourceManager::loadTexture("res/textures/crate.png", GL_TRUE, "crate");
 	ResourceManager::loadTexture("res/textures/crateSpecular.png", GL_FALSE, "crateSpecular");
 	
+	Logger::logSuccess("RES", "Successfully loaded resources");
 }
