@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <GLFW/glfw3.h>
+
 #include <iostream>
 
 #include "Logger.h"
@@ -22,6 +24,11 @@ Game::Game(int width, int height) {
 
 	objectManager.addPlane(Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.0f, -2.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(90.0f, 0.0f, 0.0f)));
 	objectManager.addPlane(Plane("crate", "crateSpecular", glm::vec3(0.0f, 0.25f, -2.75f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.0f, 0.0f, 0.0f)));
+
+	//starting values for camera
+	InputManager::xoffset = 0;
+	InputManager::yoffset = 0;
+	camera.rotateCamera(-90, 0, 1);
 }
 
 
@@ -32,8 +39,19 @@ Game::~Game() {
 
 
 void Game::render() {
+	//glBindFramebuffer(GL_FRAMEBUFFER, waterRenderer->FBO);
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	//objectManager.render(objectRenderer);
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT);
+
 	objectManager.render(objectRenderer);
-	waterRenderer->drawWater(glm::vec3(0.0f, -0.3f, -2.0f), glm::vec3(1,1,1), glm::vec3(0,0,1));
+	glDisable(GL_DEPTH_TEST);
+	waterRenderer->drawWater(glm::vec3(0.0f, -0.3f, -2.0f), glm::vec3(10, 10, 10), glm::vec3(0,0,1));
 }
 
 void Game::update() {
@@ -63,6 +81,7 @@ void Game::update() {
 
 	ResourceManager::getShader("water").use();
 	ResourceManager::getShader("water").setMat4("view", view);
+	ResourceManager::getShader("water").setFloat("time", glfwGetTime());
 
 	objectManager.update();
 }
@@ -71,7 +90,7 @@ void Game::update() {
 void Game::init() {
 	Logger::logMessage("RES", "Generating Resources");
 	//lighted shader
-	ResourceManager::loadShader("res/shaders/lighted.vs", "res/shaders/lighted.fs", nullptr, "lighted");
+	ResourceManager::loadShader("res/shaders/lighted.vert", "res/shaders/lighted.frag", nullptr, "lighted");
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<GLfloat>(width / height), 0.1f, 100.0f);
 	
@@ -104,8 +123,9 @@ void Game::init() {
 
 
 	//water shader
-	ResourceManager::loadShader("res/shaders/water.vs", "res/shaders/water.fs", nullptr, "water");
+	ResourceManager::loadShader("res/shaders/water.vert", "res/shaders/water.frag", nullptr, "water");
 	ResourceManager::getShader("water").use();
+	ResourceManager::getShader("water").setInt("screenTexture", 0);
 	ResourceManager::getShader("water").setMat4("projection", projection);
 
 	Shader wshader = ResourceManager::getShader("water");
@@ -115,7 +135,6 @@ void Game::init() {
 	//textures
 	ResourceManager::loadTexture("res/textures/person.png", GL_TRUE, "person");
 	ResourceManager::loadTexture("res/textures/tree.png", GL_TRUE, "tree");
-	ResourceManager::loadTexture("res/textures/background.png", GL_FALSE, "background");
 	ResourceManager::loadTexture("res/textures/crate.png", GL_TRUE, "crate");
 	ResourceManager::loadTexture("res/textures/crateSpecular.png", GL_FALSE, "crateSpecular");
 	

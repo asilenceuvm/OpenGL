@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 class Camera {
@@ -61,6 +62,6 @@ private:
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
 
-    glm::vec3 direction;
-    float yaw, pitch;
+    glm::vec3 direction = glm::vec3(1);
+    float yaw = 0, pitch = 0;
 };

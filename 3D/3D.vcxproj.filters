@@ -103,9 +103,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\lighted.fs" />
-    <None Include="res\shaders\lighted.vs" />
-    <None Include="res\shaders\water.fs" />
-    <None Include="res\shaders\water.vs" />
+    <None Include="res\shaders\water.vert" />
+    <None Include="res\shaders\water.frag" />
+    <None Include="res\shaders\lighted.vert" />
+    <None Include="res\shaders\lighted.frag" />
   </ItemGroup>
 </Project>

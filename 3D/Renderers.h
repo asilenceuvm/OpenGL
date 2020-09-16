@@ -36,6 +36,8 @@ public:
     void drawWater(glm::vec3 position,
         glm::vec3 size, 
         glm::vec3 color = glm::vec3(1.0f));
-private:
+
     GLuint FBO;
+private:
+	unsigned int texture;
 };

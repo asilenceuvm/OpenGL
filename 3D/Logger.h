@@ -50,6 +50,7 @@ namespace Logger {
 			SetConsoleTextAttribute(hConsole, 9);
 			sectionStartTime = getSysTime();
 			std::cout << "[" << category << "] " << message << std::endl;
+			SetConsoleTextAttribute(hConsole, 15);
 		}
 	}
 	

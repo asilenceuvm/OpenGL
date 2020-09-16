@@ -18,7 +18,7 @@ public:
 
 	void update() {
 		body.update();
-		position = body.getPos();
+		//position = body.getPos();
 	}
 	
 	void render(ObjectRenderer* renderer) {

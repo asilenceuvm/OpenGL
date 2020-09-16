@@ -35,7 +35,7 @@ void ResourceManager::clear() {
 
 Shader ResourceManager::loadShaderFromFile(const GLchar* vShaderFile, const GLchar* fShaderFile, const GLchar* gShaderFile) {
     std::string name = vShaderFile;
-    name = name.substr(name.find_last_of("/") + 1, name.find("."));
+    name = name.substr(name.find_last_of("/") + 1, name.find_last_of(".") - name.find_last_of("/") - 1);
     std::string message = "Generating " + name + " shader";
     Logger::logMessage("RES", message.c_str());
     std::string vertexCode;
