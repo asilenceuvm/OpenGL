@@ -34,8 +34,9 @@ Game::Game(int width, int height) {
 	InputManager::yoffset = 0;
 	camera.rotateCamera(-90, 0, 1);
 
-	const char* path = "res/models/backpack/backpack.obj";
-	model = new Model(path);
+	//const char* path = "res/models/backpack/backpack.obj";
+	stbi_set_flip_vertically_on_load(true);
+	model = new Model("res/models/backpack/backpack.obj");
 }
 
 
