@@ -12,8 +12,8 @@ uniform mat4 projection;
 uniform vec3 color;
 
 void main() {
-    //gl_Position = projection * view * model * vec4(vertex, 1.0);
-    gl_Position = vec4(vertex, 1.0);
+    gl_Position = projection * view * model * vec4(vertex, 1.0);
+    //gl_Position = vec4(vertex, 1.0);
     vertexColor = vec4(color, 1.0);
     texCoords = TexCoords;
 }

@@ -49,8 +49,8 @@ ObjectRenderer::~ObjectRenderer() {
 
 
 void ObjectRenderer::drawObject(Texture texture, Texture spec, glm::vec3 position, glm::vec3 size, glm::vec3 rotate, glm::vec3 color) {
-	//this->shader.use();
-	glUseProgram(this->shader.getID());
+	this->shader.use();
+	//glUseProgram(this->shader.getID());
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, position);
@@ -74,9 +74,9 @@ void ObjectRenderer::drawObject(Texture texture, Texture spec, glm::vec3 positio
 	glBindVertexArray(0);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);
+//	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+//	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -84,10 +84,10 @@ WaterRenderer::WaterRenderer(Shader& shader) {
 	this->shader = shader;
 	float vertices[] = {
 		 //position         
-		 0.5f,  0.0f,  1.0f, 1.0f, 1.0f,
-		 0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f,  1.0f, 0.0f, 0.0f,
-		-0.5f,  0.0f,  1.0f, 0.0f, 1.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+		 1.0f,  -1.0f,  1.0f, 1.0f, 0.0f,
+		-1.0f,  -1.0f,  1.0f, 0.0f, 0.0f,
+		-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
 	};
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -98,10 +98,8 @@ WaterRenderer::WaterRenderer(Shader& shader) {
 	glGenVertexArrays(1, &this->VAO);
 	glGenBuffers(1, &this->VBO);
 	glGenBuffers(1, &this->EBO);
-	glGenFramebuffers(1, &this->FBO);
 
 	glBindVertexArray(this->VAO);
-	glBindFramebuffer(GL_FRAMEBUFFER, this->FBO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 
@@ -115,30 +113,6 @@ WaterRenderer::WaterRenderer(Shader& shader) {
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)3);
 
-	
-	//framebuffer
-	glGenTextures(1, &this->texture);
-	glBindTexture(GL_TEXTURE_2D, this->texture);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->texture, 0);
-
-	//rbo for framebuffer
-	unsigned int rbo;
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo); 
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);  
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		Logger::logError("RES", "Water framebuffer is not complete");
-	}
-
 	//unbind buffers
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindVertexArray(0);
@@ -149,7 +123,6 @@ WaterRenderer::~WaterRenderer() {
 	glDeleteVertexArrays(1, &this->VAO);
 	glDeleteVertexArrays(1, &this->VBO);
 	glDeleteVertexArrays(1, &this->EBO);
-	glDeleteFramebuffers(1, &this->FBO);
 }
 
 
@@ -159,15 +132,15 @@ void WaterRenderer::drawWater(glm::vec3 position, glm::vec3 size, glm::vec3 colo
 
 	model = glm::translate(model, position);
 	model = glm::scale(model, size);
-	this->shader.setMat4("model", model);
+	//this->shader.setMat4("model", model);
 	
-	this->shader.setVec3("color", color);
+	//this->shader.setVec3("color", color);
 	glBindVertexArray(this->VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, this->texture);
+	glBindTexture(GL_TEXTURE_2D, this->textureColorbuffer);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+//	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

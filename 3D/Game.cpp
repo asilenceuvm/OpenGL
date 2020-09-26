@@ -10,12 +10,16 @@
 #include "InputManager.h"
 #include "Plane.h"
 #include "ObjectManager.h"
+#include "Model.h"
 
 glm::mat4 view(1);
 Camera camera;
 ObjectRenderer* objectRenderer;
 WaterRenderer* waterRenderer;
 ObjectManager objectManager;
+Model* model;
+
+float x = 0.0f;
 
 Game::Game(int width, int height) {
 	this->width = width;
@@ -29,29 +33,25 @@ Game::Game(int width, int height) {
 	InputManager::xoffset = 0;
 	InputManager::yoffset = 0;
 	camera.rotateCamera(-90, 0, 1);
+
+	const char* path = "res/models/backpack/backpack.obj";
+	model = new Model(path);
 }
 
 
 Game::~Game() {
 	delete objectRenderer;
 	delete waterRenderer;
+	delete model;
 }
 
 
 void Game::render() {
-	//glBindFramebuffer(GL_FRAMEBUFFER, waterRenderer->FBO);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	//objectManager.render(objectRenderer);
-
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT);
-
 	objectManager.render(objectRenderer);
-	glDisable(GL_DEPTH_TEST);
-	waterRenderer->drawWater(glm::vec3(0.0f, -0.3f, -2.0f), glm::vec3(10, 10, 10), glm::vec3(0,0,1));
+	Shader shader = ResourceManager::getShader("lighted");
+	model->render(shader);
 }
 
 void Game::update() {
@@ -76,6 +76,8 @@ void Game::update() {
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	
 	ResourceManager::getShader("lighted").use();
+	ResourceManager::getShader("lighted").setVec3("pointLight.position", 2 * sin(x), 2 * cos(x), -2.0f);
+	x -= 0.01f;
   	ResourceManager::getShader("lighted").setMat4("view", view);
 	ResourceManager::getShader("lighted").setVec3("viewPos", cameraPos);
 
@@ -84,6 +86,17 @@ void Game::update() {
 	ResourceManager::getShader("water").setFloat("time", glfwGetTime());
 
 	objectManager.update();
+
+	//temp
+	if (InputManager::keys[GLFW_KEY_F]) {
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
+	if (InputManager::keys[GLFW_KEY_V]) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
+
 }
 
 

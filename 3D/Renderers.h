@@ -37,7 +37,7 @@ public:
         glm::vec3 size, 
         glm::vec3 color = glm::vec3(1.0f));
 
-    GLuint FBO;
+    GLuint framebuffer;
 private:
-	unsigned int texture;
+	unsigned int textureColorbuffer;
 };
