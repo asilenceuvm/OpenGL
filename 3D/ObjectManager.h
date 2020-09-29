@@ -12,6 +12,7 @@ public:
 	void addPlane(Plane plane);
 
 	void clearPlanes();
+	void clearModels();
 private:
 	std::vector<Plane> planes;
 };

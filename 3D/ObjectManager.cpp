@@ -17,7 +17,5 @@ void ObjectManager::addPlane(Plane plane) {
 }
 
 void ObjectManager::clearPlanes() {
-	for (auto& plane : planes) {
-
-	}
+	planes.clear();
 }

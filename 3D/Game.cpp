@@ -16,6 +16,7 @@ glm::mat4 view(1);
 Camera camera;
 ObjectRenderer* objectRenderer;
 WaterRenderer* waterRenderer;
+ModelRenderer* modelRenderer;
 ObjectManager objectManager;
 Model* model;
 
@@ -33,10 +34,6 @@ Game::Game(int width, int height) {
 	InputManager::xoffset = 0;
 	InputManager::yoffset = 0;
 	camera.rotateCamera(-90, 0, 1);
-
-	//const char* path = "res/models/backpack/backpack.obj";
-	stbi_set_flip_vertically_on_load(true);
-	model = new Model("res/models/backpack/backpack.obj");
 }
 
 
@@ -50,9 +47,8 @@ Game::~Game() {
 void Game::render() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	objectManager.render(objectRenderer);
-	Shader shader = ResourceManager::getShader("lighted");
-	model->render(shader);
+	//objectManager.render(objectRenderer);
+	modelRenderer->render(model, glm::vec3(0, 0, -5), glm::vec3(1, 1, 1), glm::vec3(0, 0, 5 * sin(glfwGetTime())));
 }
 
 void Game::update() {
@@ -144,6 +140,13 @@ void Game::init() {
 
 	Shader wshader = ResourceManager::getShader("water");
 	waterRenderer = new WaterRenderer(wshader);
+
+
+	//models
+	stbi_set_flip_vertically_on_load(true);
+	model = new Model("res/models/backpack/backpack.obj");
+
+	modelRenderer = new ModelRenderer(shader);
 
 
 	//textures

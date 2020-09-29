@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Shader.h"
-#include "Texture.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Shader.h"
+#include "Texture.h"
+#include "Model.h"
 
 class Renderer {
 public:
@@ -40,4 +42,11 @@ public:
     GLuint framebuffer;
 private:
 	unsigned int textureColorbuffer;
+};
+
+class ModelRenderer : public Renderer {
+public:
+    ModelRenderer(Shader& shader);
+
+    void render(Model* m, glm::vec3 position, glm::vec3 size, glm::vec3 rotate);
 };

@@ -140,7 +140,28 @@ void WaterRenderer::drawWater(glm::vec3 position, glm::vec3 size, glm::vec3 colo
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->textureColorbuffer);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+ModelRenderer::ModelRenderer(Shader& shader) {
+	this->shader = shader;
+
+}
+
+void ModelRenderer::render(Model* m, glm::vec3 position, glm::vec3 size, glm::vec3 rotate) {
+	this->shader.use();
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, position);
+
+	model = glm::rotate(model, glm::radians(rotate.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotate.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotate.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	model = glm::scale(model, size);
+	this->shader.setMat4("model", model);
+	m->render(this->shader);
+
 }

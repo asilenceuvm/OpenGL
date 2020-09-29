@@ -5,64 +5,50 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
 #include <string>
 #include <vector>
 
-using namespace std;
-
 struct Vertex {
-    // position
     glm::vec3 position;
-    // normal
     glm::vec3 normal;
-    // texCoords
     glm::vec2 texCoords;
-    // tangent
     glm::vec3 tangent;
-    // bitangent
     glm::vec3 bitangent;
 };
 
 struct TextureStruct {
     unsigned int id;
-    string type;
-    string path;
+    std::string type;
+    std::string path;
 };
 
 class Mesh {
 public:
-    // mesh Data
-    vector<Vertex>       vertices;
-    vector<unsigned int> indices;
-    vector<TextureStruct>      textures;
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<TextureStruct> textures;
     unsigned int VAO;
 
-    // constructor
-    Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<TextureStruct> textures)
-    {
+    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureStruct> textures) {
         this->vertices = vertices;
         this->indices = indices;
         this->textures = textures;
 
-        // now that we have all the required data, set the vertex buffers and its attribute pointers.
         setupMesh();
     }
 
-    // render the mesh
-    void Draw(Shader &shader) 
-    {
+    void render(Shader &shader)  {
         // bind appropriate textures
         unsigned int diffuseNr  = 1;
         unsigned int specularNr = 1;
         unsigned int normalNr   = 1;
         unsigned int heightNr   = 1;
-        for(unsigned int i = 0; i < textures.size(); i++)
-        {
+
+        for(unsigned int i = 0; i < textures.size(); i++) {
             glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
-            string number;
-            string name = textures[i].type;
+            std::string number;
+            std::string name = textures[i].type;
             if(name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
             else if(name == "texture_specular")
@@ -92,8 +78,7 @@ private:
     unsigned int VBO, EBO;
 
     // initializes all the buffer objects/arrays
-    void setupMesh()
-    {
+    void setupMesh() {
         // create buffers/arrays
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
